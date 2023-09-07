@@ -1,20 +1,18 @@
 package com.nikoprayogaw.pokedex.view
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.nikoprayogaw.pokedex.R
 import com.nikoprayogaw.pokedex.databinding.ActivityDetailPokemonBinding
+import com.nikoprayogaw.pokedex.utils.PokemonColorUtil
+import com.nikoprayogaw.pokedex.utils.SingleLiveEvent
 import com.nikoprayogaw.pokedex.utils.obtainViewModel
+import com.nikoprayogaw.pokedex.view.adapter.ViewPagerAdapter
 import com.nikoprayogaw.pokedex.viewmodel.PokeDetailViewModel
 
 class DetailPokemonActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDetailPokemonBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +21,14 @@ class DetailPokemonActivity : AppCompatActivity() {
         binding = ActivityDetailPokemonBinding.inflate(layoutInflater).apply {
             vmPokeDetail = this@DetailPokemonActivity.obtainViewModel(PokeDetailViewModel::class.java)
         }
+        binding.lifecycleOwner = this@DetailPokemonActivity
         setContentView(binding.root)
+
+        val pager = binding.viewPager
+        val tabs = binding.tabs
+        pager.adapter =
+            ViewPagerAdapter(supportFragmentManager, baseContext)
+        tabs.setupWithViewPager(pager)
     }
 
     override fun onResume() {

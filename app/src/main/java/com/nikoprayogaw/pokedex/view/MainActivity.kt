@@ -9,19 +9,22 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.leinardi.android.speeddial.SpeedDialView
+import com.nikoprayogaw.pokedex.R
 import com.nikoprayogaw.pokedex.databinding.ActivityMainBinding
 import com.nikoprayogaw.pokedex.model.repo.source.local.PokedexDatabase
 import com.nikoprayogaw.pokedex.utils.ConstantVariable
 import com.nikoprayogaw.pokedex.utils.DatabaseHandler
 import com.nikoprayogaw.pokedex.utils.obtainViewModel
-import com.nikoprayogaw.pokedex.view.adapter.PokeListAdapater
+import com.nikoprayogaw.pokedex.view.adapter.PokeListAdapter
 import com.nikoprayogaw.pokedex.viewmodel.PokeListViewModel
 import java.time.Duration
 
-class MainActivity : AppCompatActivity(), LoadDataListener {
+class MainActivity : AppCompatActivity(), LoadDataListener, SearchFragment.OnInputListener {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var pokeListAdapater: PokeListAdapater
+    private lateinit var pokeListAdapter: PokeListAdapter
     private var currentOffset = ConstantVariable.offset + ConstantVariable.limit
     private var limit = ConstantVariable.limit
     private lateinit var pokedexdb: PokedexDatabase
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity(), LoadDataListener {
         setupRv()
         pokedexdb = DatabaseHandler.getDatabase(baseContext)
         binding.swipeRefresh.setOnRefreshListener {
+            currentOffset = 0
             binding.vmPokeList?.start()
         }
 
@@ -67,7 +71,68 @@ class MainActivity : AppCompatActivity(), LoadDataListener {
 
         })
 
+        val speedDialView = binding.speedDial
+        speedDialView.inflate(R.menu.menu_pokedex)
+        speedDialView.setOnActionSelectedListener(SpeedDialView.OnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.sortAsc -> {
+                    sort(true)
+                    speedDialView.close()
+                    return@OnActionSelectedListener true
+                }
+                R.id.sortAscNumber -> {
+                    sortNumber(true)
+                    speedDialView.close()
+                    return@OnActionSelectedListener true
+                }
+                R.id.sortDescNumber -> {
+                    sortNumber(false)
+                    speedDialView.close()
+                    return@OnActionSelectedListener true
+                }
+                R.id.menuSearch -> {
+                    showSearch()
+                    speedDialView.close()
+                    return@OnActionSelectedListener true
+                }
+                else -> {
+                    sort(false)
+                    speedDialView.close()
+                    return@OnActionSelectedListener true
+                }
+            }
+        })
 
+        binding.vmPokeList?.start()
+    }
+
+    private fun sort(asc: Boolean) {
+        if (asc) {
+            pokeListAdapter.pokeDataListFiltered.sortBy { it?.name }
+            pokeListAdapter.notifyDataSetChanged()
+        }
+        else {
+            pokeListAdapter.pokeDataListFiltered.sortByDescending { it?.name }
+            pokeListAdapter.notifyDataSetChanged()
+        }
+    }
+    private fun sortNumber(asc: Boolean) {
+        if (asc) {
+            pokeListAdapter.pokeDataListFiltered.sortBy { it?.url }
+            pokeListAdapter.notifyDataSetChanged()
+        }
+        else {
+            pokeListAdapter.pokeDataListFiltered.sortByDescending { it?.url }
+            pokeListAdapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun sendInput(input: String?) {
+        pokeListAdapter.filter.filter(input)
+    }
+    private fun showSearch() {
+        val dialog = SearchFragment()
+        dialog.show(supportFragmentManager, "")
     }
 
     private fun openPokemon(id: String) {
@@ -76,26 +141,21 @@ class MainActivity : AppCompatActivity(), LoadDataListener {
         startActivity(i)
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.vmPokeList?.start()
-    }
-
     private fun setupRv() {
         val viewModel = binding.vmPokeList
         if (viewModel != null) {
             binding.rvPokeList.visibility = View.VISIBLE
-            pokeListAdapater = PokeListAdapater(viewModel.pokeDataList, viewModel)
-            binding.rvPokeList.adapter = pokeListAdapater
+            pokeListAdapter = PokeListAdapter(viewModel.pokeDataList, viewModel)
+            binding.rvPokeList.adapter = pokeListAdapter
         }
 
     }
 
     private fun initializeRecycler() {
-        val LinearLayout = LinearLayoutManager(baseContext)
+        val gridLayout = GridLayoutManager(baseContext, 2)
         binding.rvPokeList.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayout
+            layoutManager = gridLayout
         }
     }
 

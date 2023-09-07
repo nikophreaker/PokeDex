@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuSearch"
+        android:icon="@drawable/search"
+        android:title="Search" />
+    <item
+        android:id="@+id/sortAscNumber"
+        android:icon="@drawable/pokeball"
+        android:title="Sort Asc (1-10)" />
+
+    <item
+        android:id="@+id/sortDescNumber"
+        android:icon="@drawable/pokeball"
+        android:title="Sort Desc (10-1)" />
+    <item
+        android:id="@+id/sortAsc"
+        android:icon="@drawable/pokeball"
+        android:title="Sort Asc (A-Z)" />
+
+    <item
+        android:id="@+id/sortDesc"
+        android:icon="@drawable/pokeball"
+        android:title="Sort Desc (Z-A)" />
+
+</menu>

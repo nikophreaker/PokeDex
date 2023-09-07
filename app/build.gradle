@@ -54,6 +54,7 @@ dependencies {
 
     // other lib
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation("com.leinardi.android:speed-dial:3.3.0")
 //    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'

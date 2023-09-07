@@ -27,7 +27,6 @@ class PokeListViewModel(application: Application, private val dataRepo: DataRepo
             getPokeList(offset, limit)
         }
     }
-
     private fun getPokeList(offset: Int, limit: Int) {
         dataRepo.getPokemonList(object : DataSource.GetPokemonListCallback{
             override fun onDataLoaded(pokeList: MutableList<Result?>) {

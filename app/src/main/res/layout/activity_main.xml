@@ -40,8 +40,7 @@
                         setPokeList="@{vmPokeList.pokeDataList}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        android:orientation="vertical" />
 
                     <ProgressBar
                         android:id="@+id/progressbar"
@@ -80,6 +79,15 @@
             </androidx.core.widget.NestedScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            app:sdMainFabOpenedSrc="@drawable/close"
+            app:sdMainFabClosedSrc="@drawable/filter" />
 
         <RelativeLayout
             android:id="@+id/onLoad"
