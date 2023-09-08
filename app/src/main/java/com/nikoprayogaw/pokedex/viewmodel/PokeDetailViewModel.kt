@@ -24,6 +24,10 @@ class PokeDetailViewModel(application: Application, private val dataRepo: DataRe
     val type1 = SingleLiveEvent<String>()
     val type2 = SingleLiveEvent<String>()
     val type3 = SingleLiveEvent<String>()
+    val ability1 = SingleLiveEvent<String>()
+    val ability2 = SingleLiveEvent<String>()
+    val ability3 = SingleLiveEvent<String>()
+    val ability4 = SingleLiveEvent<String>()
     val move1 = SingleLiveEvent<String>()
     val move2 = SingleLiveEvent<String>()
     val move3 = SingleLiveEvent<String>()
@@ -65,6 +69,20 @@ class PokeDetailViewModel(application: Application, private val dataRepo: DataRe
                     }
                     pokeDetail.moves.getOrNull(3).let {
                         move4.value = it?.move?.name
+                    }
+                }
+                if (pokeDetail?.abilities?.isNotEmpty() == true) {
+                    pokeDetail.abilities.getOrNull(0).let {
+                        ability1.value = it?.ability?.name
+                    }
+                    pokeDetail.abilities.getOrNull(1).let {
+                        ability2.value = it?.ability?.name
+                    }
+                    pokeDetail.abilities.getOrNull(2).let {
+                        ability3.value = it?.ability?.name
+                    }
+                    pokeDetail.abilities.getOrNull(3).let {
+                        ability4.value = it?.ability?.name
                     }
                 }
                 val dataPokemon = pokeDataDetail.get()?.stats
