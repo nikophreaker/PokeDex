@@ -1,6 +1,7 @@
 package com.nikoprayogaw.pokedex.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField

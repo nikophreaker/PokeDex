@@ -118,11 +118,13 @@ class MainActivity : AppCompatActivity(), LoadDataListener, SearchFragment.OnInp
     }
     private fun sortNumber(asc: Boolean) {
         if (asc) {
-            pokeListAdapter.pokeDataListFiltered.sortBy { it?.url }
+            pokeListAdapter.pokeDataListFiltered.sortBy { it?.url?.substring(it.url.lastIndexOf("n/")+2, it.url.lastIndexOf("/"))
+                ?.let { it1 -> it1.toInt() } }
             pokeListAdapter.notifyDataSetChanged()
         }
         else {
-            pokeListAdapter.pokeDataListFiltered.sortByDescending { it?.url }
+            pokeListAdapter.pokeDataListFiltered.sortByDescending { it?.url?.substring(it.url.lastIndexOf("n/")+2, it.url.lastIndexOf("/"))
+                ?.let { it1 -> it1.toInt() } }
             pokeListAdapter.notifyDataSetChanged()
         }
     }
@@ -147,6 +149,7 @@ class MainActivity : AppCompatActivity(), LoadDataListener, SearchFragment.OnInp
             binding.rvPokeList.visibility = View.VISIBLE
             pokeListAdapter = PokeListAdapter(viewModel.pokeDataList, viewModel)
             binding.rvPokeList.adapter = pokeListAdapter
+            pokeListAdapter.filter.filter("")
         }
 
     }

@@ -37,8 +37,11 @@ class PokeListViewModel(application: Application, private val dataRepo: DataRepo
                     }
                     onLoadDataListener?.onDataLoad()
                 } else {
-                    with(pokeDataList) {
-                        addAll(pokeList)
+                    if (pokeDataList.last() != pokeList.last()) {
+                        with(pokeDataList) {
+                            addAll(pokeList)
+                            distinct()
+                        }
                     }
                     onLoadDataListener?.onDataResumeLoad()
                     isLoading.value = false

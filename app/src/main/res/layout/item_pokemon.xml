@@ -12,6 +12,10 @@
             type="com.nikoprayogaw.pokedex.model.data.pokelist.Result" />
 
         <variable
+            name="typeColor"
+            type="java.util.List&lt;String>" />
+
+        <variable
             name="action"
             type="com.nikoprayogaw.pokedex.view.PokeClickListener" />
 
@@ -27,6 +31,7 @@
         android:clipToPadding="false"
         android:focusable="true"
         android:padding="8dp"
+        setColorBg="@{typeColor}"
         tools:backgroundTint="@color/lightTeal"
         android:onClick="@{()->action.onPokemonClick()}">
 

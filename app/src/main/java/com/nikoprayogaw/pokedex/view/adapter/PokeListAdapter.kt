@@ -34,7 +34,8 @@ class PokeListAdapter(
             }
 
         }
-        (holder as PokeHolder).bindRows(data, actionListener)
+        val typeColor = listOf("grass", "fire","water","electric","poison","ground")
+        (holder as PokeHolder).bindRows(data, typeColor, actionListener)
     }
 
     override fun getItemCount(): Int = pokeDataListFiltered.size
@@ -51,8 +52,9 @@ class PokeListAdapter(
     class PokeHolder(binding: ItemPokemonBinding) : RecyclerView.ViewHolder(binding.root) {
         private val itemItemBinding = binding
 
-        fun bindRows(pokeData: Result?, userActionListener: PokeClickListener) {
+        fun bindRows(pokeData: Result?, typeColor: List<String>, userActionListener: PokeClickListener) {
             itemItemBinding.data = pokeData
+            itemItemBinding.typeColor = typeColor
             itemItemBinding.action = userActionListener
             itemItemBinding.executePendingBindings()
         }
@@ -62,16 +64,16 @@ class PokeListAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
-                if (charString.isEmpty()) pokeDataListFiltered = pokeDataList else {
+                pokeDataListFiltered = if (charString.isEmpty()) pokeDataList else {
                     val filteredList = mutableListOf<Result?>()
                     pokeDataList
                         .filter {
                             (it?.name?.contains(constraint.toString()) == true)
-//                            or (it?.url?.contains(constraint.toString()) == true)
+            //                            or (it?.url?.contains(constraint.toString()) == true)
 
                         }
                         .forEach { filteredList.add(it) }
-                    pokeDataListFiltered = filteredList
+                    filteredList
 
                 }
                 return FilterResults().apply { values = pokeDataListFiltered }

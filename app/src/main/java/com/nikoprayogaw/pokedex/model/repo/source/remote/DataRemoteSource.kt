@@ -28,7 +28,7 @@ class DataRemoteSource(
                     if (it.results != null) {
                         callback.onDataLoaded(it.results.toMutableList())
 //                        localDB.pokeListDao().deletePokelist()
-//                        localDB.pokeListDao().addData(it.results.toMutableList())
+                        localDB.pokeListDao().addData(it.results.toMutableList())
                     } else {
                         callback.onNotAvailable()
                     }

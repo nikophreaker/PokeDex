@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.BindingAdapter
 import com.google.android.material.appbar.AppBarLayout
@@ -41,6 +42,18 @@ object MainBinding {
                 val window = (parent.context as Activity).window
                 window?.statusBarColor = color
             }
+        }
+    }
+    @SuppressLint("CheckResult")
+    @BindingAdapter("setColorBg")
+    @JvmStatic
+    fun RelativeLayout.setColorBg(
+        type: List<String>?
+    ) {
+        if (!type.isNullOrEmpty()) {
+            val color = PokemonColorUtil(context).getPokemonColor(type)
+            this.background.colorFilter =
+            PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         }
     }
 }

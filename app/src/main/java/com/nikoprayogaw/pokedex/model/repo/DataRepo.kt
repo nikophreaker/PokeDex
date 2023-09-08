@@ -27,25 +27,24 @@ class DataRepo constructor(
 
             override fun onError(msg: String?) {
                 callback.onError(msg)
+                localSource.getPokemonList(object : DataSource.GetPokemonListCallback {
+                    override fun onDataLoaded(pokeList: MutableList<Result?>) {
+                        callback.onDataLoaded(pokeList)
+                        Log.i("pokemonlist", pokeList.toString())
+                    }
+
+                    override fun onNotAvailable() {
+
+                    }
+
+                    override fun onError(msg: String?) {
+
+                    }
+
+                }, offset, limit)
             }
 
         } , offset, limit)
-
-        localSource.getPokemonList(object : DataSource.GetPokemonListCallback {
-            override fun onDataLoaded(pokeList: MutableList<Result?>) {
-                callback.onDataLoaded(pokeList)
-                Log.i("pokemonlist", pokeList.toString())
-            }
-
-            override fun onNotAvailable() {
-
-            }
-
-            override fun onError(msg: String?) {
-
-            }
-
-        }, offset, limit)
     }
 
     override fun getPokemonDetail(callback: DataSource.GetPokemonDetailCallback, id: String) {
